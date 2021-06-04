@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+    body {
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+</head>
+<body>
+    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
+    <script>
+
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext('2d');
+    var lasttime;    
+    var moving = 0;
+   
+    var myRectangle = {
+        x: 0,
+        y: 0,
+        width: 50,
+        height: 50,
+        borderWidth: 3
+    };
+
+    var runAnimation = {
+        value: false
+    };
+
+    window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+
+    function drawRect(myRectangle, context) {
+        context.beginPath();
+        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+        context.fillStyle = '#8ED6FF';
+        context.fill();
+        context.lineWidth = myRectangle.borderWidth;
+        context.strokeStyle = 'black';
+        context.stroke();
+    }
+
+    function animate(myRectangle, runAnimation, canvas, context) {
+        if(runAnimation.value) {
+            // update
+            var time = (new Date()).getTime();
+            var timeDiff = time - lasttime;
+            var linearDistEachFrame = 5 * timeDiff / 1000;
+            
+                switch(moving){
+                    case 0:
+                        myRectangle.x  += linearDistEachFrame;
+                        if(myRectangle.x+myRectangle.width > canvas.width) moving = 1;
+                      
+                        break;
+                    case 1:
+                        myRectangle.y  += linearDistEachFrame;
+                        if(myRectangle.y+myRectangle.height > canvas.height) moving = 2;
+                        
+                        break;
+                    case 2:
+                        myRectangle.x  -= linearDistEachFrame;
+                        if(myRectangle.x < 0) moving = 3;
+                       
+                        break;
+                    case 3:
+                        myRectangle.y  -= linearDistEachFrame;
+                        if(myRectangle.y < 0) moving = 0;
+            
+                        break;
+                
+                }
+              
+            if(myRectangle.x + myRectangle.width > canvas.width) myRectangle.x = canvas.width-myRectangle.width;
+            if(myRectangle.y + myRectangle.height > canvas.height) myRectangle.y = canvas.height-myRectangle.height;
+            if(myRectangle.x < 0) myRectangle.x = 0;
+            if(myRectangle.y < 0) myRectangle.y = 0;
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawRect(myRectangle, context);
+     
+            requestAnimFrame(function() {
+                animate(myRectangle, runAnimation, canvas, context);
+            });
+        }
+    }
+
+    document.getElementById('myCanvas').addEventListener('click', function() {
+        runAnimation.value = !runAnimation.value;
+        if(runAnimation.value) {
+            lasttime = (new Date()).getTime();
+            animate(myRectangle, runAnimation, canvas, context);
+        }
+    });
+
+    drawRect(myRectangle, context);
+    </script>
+</body>
+</html>

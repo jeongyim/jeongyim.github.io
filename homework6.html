@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+    <title>Themepark ticket</title>
+    
+<style type="text/css">
+#wrap{
+	width:400px;
+	margin:0 auto;
+	text-align:left;
+	margin-top:8px;
+	padding:5px;
+	background:rgb(82, 116, 97);
+    font-family:sans-serif;
+	font-size:13px;    
+    line-height:16px;
+}
+#wrap .main fieldset{
+	margin:10px;
+	padding:20px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+}
+
+#wrap legend{
+	font-size:16px;
+	font-family:sans-serif;
+	color:rgb(191, 212, 200);
+	font-weight:bold;
+
+}
+
+#wrap label{
+	display:block;
+	font-size:12px;
+	color:rgb(191, 212, 200);
+    font-weight:bold;
+}
+
+
+#wrap div#totalPrice
+{
+    margin:5px;
+    padding:10px;
+    font-weight:bold;
+}
+
+#wrap label.selectlabel
+{
+font-weight:normal;
+ display:inline;
+}
+
+#time
+{
+  font-size:20px;
+  font-weight:bold;
+  text-align: center;
+}
+</style>
+</head>
+<body onload="startTime()">
+  <div id="wrap">
+    <form action="" id="ticket" onsubmit="return false;">
+      <div>
+        <div class="main">
+          <fieldset>
+            <div id="time"></div>
+            <legend>[Coffee Menu]</legend>
+            <table width="300">
+            <th align="center"><label >Coffee</label></th>
+            <th align="center"><label >Ade & Fruit Tea</label></th>
+            <tr  align="center">
+              <th><label class='selectlabel'>에소프레소 : 2000</label>
+                <select  id='espresso' onchange='calculateTotal()'>
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th>          
+              <th><label class='selectlabel'>오렌지에이드 : 3000</label>
+                <select  id="orange" onchange="calculateTotal()">
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th></tr>
+            <tr align="center">
+              <th><label class='selectlabel'>아메리카노 : 2500</label>
+                <select  id="americano" onchange="calculateTotal()">
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th>
+              <th><label class='selectlabel'>자몽에이드 : 3000</label>
+                <select  id="grapefruit" onchange="calculateTotal()">
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th></tr>
+            <tr align="center">
+              <th><label class='selectlabel'>카페라떼 : 3500</label>
+                <select  id="cafelatte" onchange="calculateTotal()">
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th>
+              <th><label class='selectlabel'>유자 레몬티 : 3000</label>
+                <select  id="citron" onchange="calculateTotal()">
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th></tr>
+            <tr align="center">
+              <th><label class='selectlabel'>카페모카 : 3500</label>
+                <select  id="cafemocha" onchange="calculateTotal()">
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th>
+              <th><label class='selectlabel'>아이스티 : 2500</label>
+                <select  id="icetea" onchange="calculateTotal()">
+                  <option value=0>0</option>
+                  <option value=1>1</option>
+                  <option value=2>2</option>
+                  <option value=3>3</option>
+                  <option value=4>4</option>
+                  <option value=5>5</option></select></th></tr>
+
+            </table>
+          <div id="totalPrice"></div>
+          </fieldset>
+        </div>
+      </div>  
+    </form>
+	</div>
+</body>
+<script>
+  function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('time').innerHTML =h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 1000);
+  }
+  function checkTime(i) {
+    if (i < 10) {i = "0" + i};
+    return i;
+  }
+  
+  function calculateTotal() {
+    const espressostr=document.getElementById('espresso').value;
+    espresso=parseInt(espressostr)*2000;
+    const orangestr=document.getElementById('orange').value;
+    orange=parseInt(orangestr)*3000;
+    const americanostr=document.getElementById('americano').value;
+    americano=parseInt(americanostr)*2500;
+    const grapefruitstr=document.getElementById('grapefruit').value;
+    grapefruit=parseInt(grapefruitstr)*3000;
+    const cafelattestr=document.getElementById('cafelatte').value;
+    cafelatte=parseInt(cafelattestr)*3500;
+    const citronstr=document.getElementById('citron').value;
+    citron=parseInt(citronstr)*3000;
+    const cafemochastr=document.getElementById('cafemocha').value;
+    cafemocha=parseInt(cafemochastr)*3500;
+    const iceteastr=document.getElementById('icetea').value;
+    icetea=parseInt(iceteastr)*2500;
+    var sum = espresso+orange+americano+grapefruit+cafelatte+citron+cafemocha+icetea;
+    document.getElementById("totalPrice").innerText=sum+"원";
+    }
+
+</script>
+</html>

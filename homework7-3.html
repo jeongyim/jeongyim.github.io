@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script>
+ window.onload = function () {
+ var sun = document.getElementById('sun');
+ var earth = document.getElementById('earth');
+ var moon = document.getElementById('moon');
+
+ sun.style.position = 'absolute';
+ earth.style.position = 'absolute';
+ moon.style.position = 'absolute';
+
+ sun.style.left = 250 + 'px';
+ sun.style.top = 200 + 'px';
+
+ 
+ var earthAngle = 0;
+ var moonAngle = 0;
+
+ 
+ 
+ 
+ setInterval(function () {
+
+ 
+ var earthLeft = 250 + 150 * Math.cos(earthAngle);
+ var earthTop = 200 + 150 * Math.sin(earthAngle);
+ var moonLeft = earthLeft + 50 * Math.cos(moonAngle);
+ var moonTop = earthTop + 50 * Math.sin(moonAngle);
+
+ var canvas = document.getElementById('myCanvas');
+ var context = canvas.getContext('2d');
+ var radius = 70;
+ context.clearRect(0,0,500,500);
+
+ context.beginPath();
+ context.arc(earthLeft,earthTop,radius,0,2*Math.PI,false);
+ 
+ context.fillStyle = 'green';
+ context.fill();
+ context.lineWidth = 0;
+ context.strokeStyle =  context.stroke();
+ 
+ context.beginPath();
+ context.moveTo(250, 200);
+ context.lineTo(earthLeft, earthTop);
+ context.strokeStyle = '#ff0000';
+ context.stroke();
+
+ context.beginPath();
+ context.moveTo(0, 0);
+ context.lineTo(earthLeft, earthTop);
+ context.strokeStyle = '#3333FF';
+ context.stroke();
+ 
+ context.stroke();
+
+ context.moveTo(500, 0);
+ context.lineTo(earthLeft, earthTop);
+ context.stroke();
+
+ context.moveTo(0, 500);
+ context.lineTo(earthLeft, earthTop);
+ context.stroke();
+
+ context.moveTo(500, 500);
+ context.lineTo(earthLeft, earthTop);
+ context.stroke();
+ context.closePath();
+
+
+ earth.style.left = earthLeft + 'px';
+ earth.style.top = earthTop + 'px';
+ moon.style.left = moonLeft + 'px';
+ moon.style.top = moonTop + 'px';
+
+ earthAngle += 0.1;
+ moonAngle += 0.3;
+
+ context.clearRect(moonLeft,moonTop)
+            }, 1000 / 30);
+        };
+ </script>
+</head>
+<body>
+ <h1 id="sun"></h1>
+ <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
+ <h1 id="earth"></h1>
+ <h1 id="moon"></h1>
+</body>
+</html>
